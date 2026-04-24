@@ -1,0 +1,135 @@
+// Copyright (c) 2023 The ZMK Contributors
+// SPDX-License-Identifier: MIT
+
+#include <raspberrypi/rpi_pico/rp2040.dtsi>
+#include <arm/raspberrypi/rp2040-boot-mode-retention.dtsi>
+
+#include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/led/led.h>
+
+/ {
+    chosen {
+        zephyr,sram = &sram0;
+        zephyr,flash = &flash0;
+        zephyr,flash-controller = &ssi;
+        zephyr,code-partition = &code_partition;
+        zmk,kscan = &kscan0;
+        zmk,matrix_transform = &default_transform;
+    };
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <8>;
+        rows = <3>;
+        map = <
+        RC(0,0) RC(0,1) RC(0,2) RC(0,3)
+        RC(0,4) RC(0,5) RC(0,6) RC(0,7)
+                                RC(0,8) RC(0,9)
+            >;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-direct";
+
+        input-gpios
+            = <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 7  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&pro_micro 8  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            ;
+    };
+};
+
+&flash0 {
+    reg = <0x10000000 DT_SIZE_M(16)>;
+
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        /* Reserved memory for the second stage bootloader */
+        second_stage_bootloader: partition@0 {
+            reg = <0x00000000 0x100>;
+            read-only;
+        };
+
+        /*
+         * Usable flash. Starts at 0x100, after the bootloader. The partition
+         * size is 16MB minus the 0x100 bytes taken by the bootloader.
+         */
+        code_partition: partition@100 {
+            reg = <0x100 (DT_SIZE_M(16) - 0x100)>;
+            read-only;
+        };
+    };
+};
+
+&timer {
+  status = "okay";
+};
+
+&rtc {
+    clocks = <&clocks RPI_PICO_CLKID_CLK_RTC>;
+    status = "okay";
+};
+
+zephyr_udc0: &usbd {
+  status = "okay";
+};
+
+&vreg {
+    regulator-always-on;
+    regulator-allowed-modes = <REGULATOR_RPI_PICO_MODE_NORMAL>;
+};
+
+&gpio0 {
+    status = "okay";
+};
+
+// rgb,SPI
+&pinctrl {
+    spi3_default: spi3_default {
+        group1 {
+            psels = <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        };
+    };
+};
+
+&spi3 {
+        compatible = "nordic,nrf-spim";
+        status = "okay";
+
+        pinctrl-0 = <&spi3_default>;
+        pinctrl-1 = <&spi3_sleep>;
+        pinctrl-names = "default", "sleep";
+
+
+        led_strip: ws2812@0 {
+                compatible = "worldsemi,ws2812-spi";
+                label = "WS2812";
+
+                /* SPI */
+                reg = <0>; /* ignored, but necessary for SPI bindings */
+                spi-max-frequency = <4000000>;
+
+                /* ws2812 */
+                chain-length = <10>; /* There are per-key RGB */
+                spi-one-frame = <0x70>;
+                spi-zero-frame = <0x40>;
+                color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
+        };
+};
+
+/ {
+        chosen {
+                zmk,underglow = &led_strip;
+        };
+};
+

@@ -1,0 +1,13 @@
+file_format: "1"
+id: PNCATEHO_Welcome//zmk
+name: PNCATEHO Welcome
+type: board
+arch: arm
+features:
+  - keys
+  - underglow
+  - studio
+outputs:
+  - usb
+url: https://github.com/inpudiy/PNCATEHO/tree/master/light/welcome
+

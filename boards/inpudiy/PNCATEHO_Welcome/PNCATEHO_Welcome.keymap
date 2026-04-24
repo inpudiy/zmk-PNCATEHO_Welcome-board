@@ -1,0 +1,33 @@
+// Copyright (c) 2023 The ZMK Contributors
+// SPDX-License-Identifier: MIT
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+
+// CONFIG
+#define COMBO_TIMEOUT 70
+#define STICKY_TIMEOUT 500
+
+&sk {
+    release-after-ms = <STICKY_TIMEOUT>;
+    quick-release;
+};
+
+/ {
+  combos {
+    compatible = "zmk,combos";
+  };
+
+  keymap {
+    compatible = "zmk,keymap";
+
+    default_layer {
+      bindings = <
+        &none &none &none &none
+        &none &none &none &none
+                          &none &none
+      >;
+    };
+  };
+};
+

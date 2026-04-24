@@ -97,20 +97,19 @@ zephyr_udc0: &usbd {
 
 // rgb,SPI
 &pinctrl {
-    spi3_default: spi3_default {
+    spi0_default: spi0_default {
         group1 {
             psels = <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         };
     };
 };
 
-&spi3 {
-        compatible = "nordic,nrf-spim";
+&spi0 {
+        compatible = "raspberrypi,pico-spi";
         status = "okay";
 
-        pinctrl-0 = <&spi3_default>;
-        pinctrl-1 = <&spi3_sleep>;
-        pinctrl-names = "default", "sleep";
+        pinctrl-0 = <&spi0_default>;
+        pinctrl-names = "default";
 
 
         led_strip: ws2812@0 {

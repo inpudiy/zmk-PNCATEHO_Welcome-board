@@ -99,7 +99,7 @@ zephyr_udc0: &usbd {
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
-            psels = <&gpio0 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+	    pinmux = <SPI0_TX_P19>;
         };
     };
 };

@@ -1,7 +1,0 @@
-board:
-  name: PNCATEHO_Welcome
-  vendor: inpudiy
-  socs:
-    - name: rp2040
-      variants:
-        - name: zmk

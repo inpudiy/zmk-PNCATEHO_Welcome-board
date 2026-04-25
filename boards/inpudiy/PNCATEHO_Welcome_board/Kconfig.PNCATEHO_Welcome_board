@@ -1,8 +1,8 @@
 # Copyright (c) 2023 The ZMK Contributors
 # SPDX-License-Identifier: Apache-2.0
 
-config BOARD_PNCATEHO_Welcome
-    select SOC_RP2040
+config BOARD_PNCATEHO_Welcome_board
+    bool "PNCATEHO Welcome board"
     select ZMK_BOARD_COMPAT
     imply RETAINED_MEM
     imply RETENTION

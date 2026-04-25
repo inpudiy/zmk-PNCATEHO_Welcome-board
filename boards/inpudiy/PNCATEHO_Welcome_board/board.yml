@@ -1,6 +1,8 @@
 board:
-  extend: PNCATEHO_Welcome_board
+  name: PNCATEHO_Welcome
   vendor: inpudiy
-  variants:
-    - name: zmk
-      qualifier: rp2040
+  socs:
+    - name: rp2040
+      variants:
+        - name: zmk
+

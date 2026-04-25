@@ -1,5 +1,5 @@
 file_format: "1"
-id: PNCATEHO_Welcome_board
+id: PNCATEHO_Welcome_board//zmk
 name: PNCATEHO Welcome board
 type: board
 arch: arm

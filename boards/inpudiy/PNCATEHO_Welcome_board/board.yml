@@ -1,5 +1,7 @@
 board:
   name: PNCATEHO_Welcome_board
   vendor: inpudiy
-  soc: rp2040
-  arch: arm
+  socs:
+  - name: rp2040
+    variants:
+    - name: zmk

@@ -3,8 +3,8 @@
 
 config BOARD_PNCATEHO_Welcome_board
     bool "PNCATEHO Welcome board"
+    select SOC_RP2040
     select ZMK_BOARD_COMPAT
-    depends on SOC_RP2040
     imply RETAINED_MEM
     imply RETENTION
     imply RETENTION_BOOT_MODE

@@ -2,6 +2,4 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config BOARD_PNCATEHO_WELCOME_BOARD
-	select SOC_RP2040
-        select ZMK_BOARD_COMPAT
-
+	select RP2_FLASH_W25Q080

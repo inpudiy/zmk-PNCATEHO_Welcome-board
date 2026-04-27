@@ -1,7 +1,6 @@
 board:
   name: PNCATEHO_Welcome_board
-  vendor: inpudiy
+  full_name: PNCATEHO_Welcome_board
+  vendor: waveshare
   socs:
   - name: rp2040
-    variants:
-    - name: zmk
